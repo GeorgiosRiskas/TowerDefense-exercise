@@ -11,7 +11,7 @@ public class ButtonFunctions : MonoBehaviour {
     //  If the scene is not added on the list it has to be added.
 	public void LoadLevel(int buildIndex)
 	{
-		SceneManager.LoadScene (buildIndex);
+        SceneManager.LoadScene (buildIndex);
 	}
 
     //  The function quits the application 
