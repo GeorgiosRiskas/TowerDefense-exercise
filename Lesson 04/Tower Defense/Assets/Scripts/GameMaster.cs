@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public enum TowerType {Basic, Sniper, Bomber, DeathRay};
+public enum TowerType {Basic, Sniper, Bomber, DeathRay};    //  Creating an enum that will be used for the different tower types.
 
 public class GameMaster : MonoBehaviour {
 
