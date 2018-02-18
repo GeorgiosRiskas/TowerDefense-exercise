@@ -1,11 +1,11 @@
 ﻿<Properties StartupItem="Assembly-CSharp.csproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="Unity.Instance.Unity Editor" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\GameMaster.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\ClickableTile.cs">
     <Files>
       <File FileName="Assets\Scripts\Enemy.cs" Line="1" Column="1" />
       <File FileName="Assets\Scripts\Projectile.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\ClickableTile.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\GameMaster.cs" Line="8" Column="130" />
+      <File FileName="Assets\Scripts\ClickableTile.cs" Line="72" Column="5" />
+      <File FileName="Assets\Scripts\GameMaster.cs" Line="84" Column="24" />
       <File FileName="Assets\Scripts\Turret.cs" Line="1" Column="1" />
       <File FileName="Assets\Scripts\EnemySpawner.cs" Line="1" Column="1" />
     </Files>
