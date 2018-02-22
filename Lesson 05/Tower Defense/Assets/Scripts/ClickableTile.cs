@@ -16,25 +16,35 @@ public class ClickableTile : MonoBehaviour {
 	internal Color initialColor;    //  The color is internal so that it can be accessed from othe classes, but it's not visible in the inpector
     MeshRenderer mRend; //  The MeshRenderer component.
 
-	public bool tileIsClicked;
+	[HideInInspector]public bool tileIsClicked;
 
-	public bool tileHasTurret;
+	[HideInInspector]public bool tileHasTurret;
 
-    public GameObject guiCanvas;
-    public Button basicTowerBt;
+
+	public GameObject tileUiCanvas;
+	public Button basicTurretBt;
+	public Button sniperTurretBt;
+
 
 	void Start()
 	{
+        //  Adding a function on the onClick of the button.
+		basicTurretBt.onClick.AddListener (delegate {GameMaster.gm.SpawnTower(0);});
+
+        //  Adding a function on the onClick of the button.
+		sniperTurretBt.onClick.AddListener (delegate {GameMaster.gm.SpawnTower(1);});
+
         //  Finding the MeshRenderer
 		mRend = GetComponent<MeshRenderer> ();
         //  Saving the initial color
 		initialColor = mRend.material.color;
-
-        //  Add the SpawnTower function on the button's onClick
-        basicTowerBt.onClick.AddListener(delegate {
-                GameMaster.gm.SpawnTower(0);
-            });
 	}
+
+
+	void ToggleUiButton(bool value){
+		tileUiCanvas.SetActive (value);
+	}
+
 
     //  Function that checks if the mouse is hovering over the gameObject
     //  Works with GUI elements and Colliders -- > in this case a box collider is used in each tile
@@ -48,7 +58,6 @@ public class ClickableTile : MonoBehaviour {
             //  Change the color to the hover color
 			ColorChanger (hoverColor);
 		}
-           
 
         //  If the Left mouse button is clicked,
 		if (Input.GetMouseButtonDown (0)) 
@@ -61,25 +70,18 @@ public class ClickableTile : MonoBehaviour {
 			ColorChanger (selectedColor);
             //  And confirm that the tile is clicked/selected
 			tileIsClicked = true;
-            //  Enable the slot's gui
-            ToggleUIButtons(true);
+            //  Enables the UI button.
+			ToggleUiButton (true);
 		}
 	}
-
-    //  Set the gui to Enabled or disabled
-    public void ToggleUIButtons(bool value){
-        guiCanvas.SetActive(value);
-    }
-        
-        
 
     //  Function that checks if the mouse is not hovering over the gameObject anymore
     //  Works with GUI elements and Colliders -- > in this case a box collider is used in each tile
 	void OnMouseExit()
 	{
-        //  change back to the original color
+		//  change back to the original color
 		ColorChanger (initialColor);
-        ToggleUIButtons(false);
+		ToggleUiButton (false);
 	}
 
 

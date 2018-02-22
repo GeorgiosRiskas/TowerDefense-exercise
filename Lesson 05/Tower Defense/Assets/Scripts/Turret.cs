@@ -17,16 +17,6 @@ public class Turret : MonoBehaviour {
 	void Start () 
 	{
 		_shootTimer = shootTimer;
-
-
-		if (towerType == TowerType.Basic) 
-		{
-			range = 2.5f;
-		} 
-		else if (towerType == TowerType.Sniper) 
-		{
-			range = 10;
-		}
 	}
 	
 
@@ -72,7 +62,7 @@ public class Turret : MonoBehaviour {
 		foreach (GameObject en in GameMaster.gm.allEnemies) 
 		{
             //  For each one of them that is withing range,
-			if (Vector3.Distance (en.transform.position, this.transform.position) <= range)
+			if (en != null && Vector3.Distance (en.transform.position, this.transform.position) <= range)
 			{
                 //  Is set as the current target
 				target = en.transform;

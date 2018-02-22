@@ -5,17 +5,17 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public enum TowerType {Basic, Sniper};    //  Creating an enum that will be used for the different tower types.
+public enum TowerType {Basic, Sniper};   //  Creating an enum that will be used for the different tower types.
 
 public class GameMaster : MonoBehaviour {
 
-	public GameObject turretPrefab; //  Reference to the turret prefab. Assigned in the inpector.
+	public GameObject [] turretPrefabs; //  Reference to the turret prefab. Assigned in the inpector.
 
 	public static GameMaster gm;    //  Creating a static reference of GameMaster so it can be called from other scripts faster.
 
 	public int resources = 200;     //  The resources
 
-	public int[] towerPrices;
+	public int [] towerPrices;    //  The basic tower price
 
 	public Text resourcesTxt;   //  Text reference for the resources
 	public Text timerTxt;   //  Text reference for the wave timer
@@ -38,9 +38,10 @@ public class GameMaster : MonoBehaviour {
         // One cannot be sure of the order that they will be assigned in the array, but in that case that is indifferent.
 		allTiles = FindObjectsOfType<ClickableTile> ();
 
-        towerPrices = new int[]{ 50, 100 };
-
 		UpdateResources ();
+
+
+		towerPrices = new int[]{ 50, 100 };
 	}
 
 
@@ -82,29 +83,35 @@ public class GameMaster : MonoBehaviour {
 		resourcesTxt.text = "Resources: " + resources.ToString();
 	}
 
+
     //  Function responsible for spawning towers
-	public void SpawnTower(int towerType)
+	public void SpawnTower(int towerTypeIndex)
 	{
-        ClickableTile theTile = selectedTile.GetComponent<ClickableTile>();
-        
-        if (!theTile.tileHasTurret && resources >= towerPrices[towerType]) {
+		ClickableTile selectedTileScript = selectedTile.GetComponent<ClickableTile> ();
 
-            var yOffset = .6f;
-            Vector3 spawnPos = new Vector3 (selectedTile.transform.position.x, selectedTile.transform.position.y + yOffset, selectedTile.transform.position.z);
+        //  If the selected tile doesn't have a turret and the resources are enough
+		if (!selectedTileScript.tileHasTurret && resources >= towerPrices[towerTypeIndex]) 
+		{
+            //  Setting up the position for the tower to be instantiated
+			var yOffset = .6f;
+			Vector3 spawnPos = new Vector3 (selectedTile.transform.position.x, selectedTile.transform.position.y + yOffset, selectedTile.transform.position.z);
 
-            //  Instantiate the tower prefab and save the gameObject reference
-            GameObject spawnedTower = Instantiate (turretPrefab, spawnPos, Quaternion.identity) as GameObject;
+			//  Instantiate the tower prefab and save the gameObject reference
+			GameObject spawnedTower = Instantiate (turretPrefabs[towerTypeIndex], spawnPos, Quaternion.identity) as GameObject;
 
-            spawnedTower.transform.parent = selectedTile.transform;
-            //  Getting the script of the spawned tower
-            Turret spawnedTowerScript = spawnedTower.GetComponent<Turret> ();
-            //  And setting its type to the same type that was passed as a parameter when the function was called.
-            spawnedTowerScript.towerType = (TowerType)towerType;
-            //  After the tower is spawned the resources change.
-            ModifyResources (-towerPrices[towerType]);
-            //  And confirm that this tile now has a turret
-            theTile.tileHasTurret = true;
-        }
+            // Reduce the corresponding resources accordingly
+			ModifyResources (-towerPrices[towerTypeIndex]);
 
+			//  Getting the script of the spawned tower
+			Turret spawnedTowerScript = spawnedTower.GetComponent<Turret> ();
+			//  And setting its type to the same type that was passed as a parameter when the function was called.
+			spawnedTowerScript.towerType = (TowerType)towerTypeIndex;
+
+            //  Confirming that the selected tile now has a tower built
+			selectedTileScript.tileHasTurret = true;
+		}
+
+
+      
 	}
 }

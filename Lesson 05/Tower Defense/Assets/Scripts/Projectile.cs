@@ -9,25 +9,20 @@ public class Projectile : MonoBehaviour {
 	public float rotationSpeed;
 	public Transform target;
 
+	Vector3 direction;
+
 	void Start () 
 	{
         //  On start, destroy the gameobject 3 seconds after its creation in the scene
         //  In case it is not destroyed by the collision or for any othe reason
 		Destroy (gameObject, 3f);
+
 	}
 
 
 	void Update () 
 	{
-        //  If there is no target set
-		if (target == null) 
-		{
-            //  Go no further in the code execution
-			return;
-		}
-
         //  Setting the rotation and the bullet's movement in an identical way as in the enemy's movement --> check the Enemy script
-		Vector3 direction = target.position - transform.position;
 		transform.Translate (direction.normalized * Time.deltaTime * speed, Space.World);
 		Quaternion lookRotation = Quaternion.LookRotation (direction);
 		Vector3 newRotation = Quaternion.Lerp (transform.rotation, lookRotation, Time.deltaTime * rotationSpeed).eulerAngles;
@@ -41,6 +36,7 @@ public class Projectile : MonoBehaviour {
 	{
         //  The target is whatever transform was passed as a parameter when the function was called
 		target = turretTarget;
+		direction = target.position - transform.position;
 	}
 
 
